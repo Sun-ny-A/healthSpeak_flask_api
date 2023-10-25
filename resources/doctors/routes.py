@@ -50,8 +50,13 @@ class Doctor(MethodView):
 
   @bp.response(200, DoctorModelSchemaNested)
   def get(self, doctor_id):
-    user = DoctorModel.query.get_or_404(doctor_id, description='Doctor Not Found')
-    return user
+    if doctor_id.isdigit():
+      doctor = DoctorModel.query.get(doctor_id)
+    else:
+      doctor = DoctorModel.query.filter_by(doctor_name=doctor_id).first()
+    if doctor:
+      return doctor
+    abort(400, message="Please enter valid name or id")
 
 @bp.route('/doctor/follow/<followed_id>')
 class FollowDoctor(MethodView):

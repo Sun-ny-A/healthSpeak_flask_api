@@ -48,8 +48,13 @@ class User(MethodView):
 
   @bp.response(200, UserModelSchemaNested)
   def get(self, user_id):
-    user = UserModel.query.get_or_404(user_id, description='User Not Found')
-    return user
+    if user_id.isdigit():
+      user = UserModel.query.get(user_id)
+    else:
+      user = UserModel.query.filter_by(username=user_id).first()
+    if user:
+      return user
+    abort(400, message="Please enter valid username or id")
   
 @bp.route('/user/follow/<followed_id>')
 class FollowDoctor(MethodView):
