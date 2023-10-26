@@ -1,3 +1,4 @@
+from flask_cors import CORS
 from flask import Flask
 from flask_smorest import Api
 from flask_sqlalchemy import SQLAlchemy
@@ -7,6 +8,7 @@ from flask_jwt_extended import JWTManager
 from Config import Config
 
 app = Flask(__name__)
+CORS(app)
 app.config.from_object(Config)
 
 db = SQLAlchemy(app)
