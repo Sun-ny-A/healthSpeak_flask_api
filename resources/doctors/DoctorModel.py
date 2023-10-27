@@ -1,6 +1,6 @@
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
-from associations.associations import followers,forum_response
+from ..associations.associations import followers
 
 
 

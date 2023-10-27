@@ -1,6 +1,6 @@
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
-from associations.associations import followers,forum_response
+from ..associations.associations import followers
 
 
 class UserModel(db.Model):
@@ -14,7 +14,7 @@ class UserModel(db.Model):
     email = db.Column(db.String, unique=True, nullable=False)
     password_hash = db.Column(db.String, nullable=False)
     questions = db.relationship('UserQuesModel', backref='author', lazy='dynamic', cascade='all, delete')
-     # Users following doctors
+    # Users following doctors
     followed_doctors = db.relationship(
         'DoctorModel',
         secondary=followers,

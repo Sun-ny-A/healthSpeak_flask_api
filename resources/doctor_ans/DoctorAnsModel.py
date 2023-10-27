@@ -1,6 +1,7 @@
 from app import db
+from sqlalchemy import DateTime
 from datetime import datetime
-from associations.associations  import followers,forum_response
+from ..associations.associations import forum_response
 
 
 class DoctorAnsModel(db.Model):
@@ -10,7 +11,7 @@ class DoctorAnsModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     forum_answer = db.Column(db.String, nullable=False)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    timestamp = db.Column(DateTime, default=datetime.utcnow)
     doctor_id = db.Column(db.Integer, db.ForeignKey('doctors.id'))
 
     # Explicit relationship with doctors
