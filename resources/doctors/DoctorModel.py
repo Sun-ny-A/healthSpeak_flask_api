@@ -1,17 +1,7 @@
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
+from associations import followers, forum_response
 
-
-
-#auxillary table
-#many-to-many relationship among doctors following and being followed by each other
-#patients can also follow doctors (patients cannot follow each other)
-
-followers = db.Table('followers',
- db.Column('doctor_follower_id', db.Integer, db.ForeignKey ('doctors.id')),
- db.Column('doctor_followed_id', db.Integer, db.ForeignKey ('doctors.id')),
- db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
-)
 
 
 class DoctorModel(db.Model):
@@ -26,17 +16,24 @@ class DoctorModel(db.Model):
     phone_number = db.Column(db.String)
     accepting_patients = db.Column(db.Boolean, nullable=False)
     profile_bio = db.Column(db.String)
-    answers = db.relationship('DoctorAnsModel', backref='author', lazy='dynamic', cascade='all, delete')
-    #doctors can follow each other
-    following_doctors = db.relationship(
+    answers = db.relationship('DoctorAnsModel', back_populates='doctor')
+
+    # Doctors following and being followed
+    followed_doctors = db.relationship(
         'DoctorModel',
         secondary=followers,
-        primaryjoin=(followers.c.doctor_follower_id == id) & (followers.c.doctor_followed_id == id),
-        secondaryjoin=(followers.c.doctor_follower_id == id) & (followers.c.doctor_followed_id == id),
-        backref=db.backref('doctor_followers', lazy='dynamic'),
-        lazy='dynamic')
-    #being followed 
-    followed = db.relationship('DoctorModel', secondary=followers, primaryjoin = followers.c.doctor_follower_id == id, secondaryjoin = followers.c.doctor_followed_id == id, backref = db.backref('followers', lazy='dynamic'), lazy='dynamic')
+        primaryjoin=id == followers.c.doctor_follower_id,
+        secondaryjoin=id == followers.c.doctor_followed_id,
+        back_populates='follower_doctors'
+    )
+    
+    follower_doctors = db.relationship(
+        'DoctorModel',
+        secondary=followers,
+        primaryjoin=id == followers.c.doctor_followed_id,
+        secondaryjoin=id == followers.c.doctor_follower_id,
+        back_populates='followed_doctors'
+    )
     
     
     def __repr__(self):
@@ -63,7 +60,7 @@ class DoctorModel(db.Model):
         db.session.commit()
     
     def is_following(self, doctor):
-       return self.is_followed.filter(doctor.id == followers.c.doctor_followed_id).count()>0
+       return self.follower_doctors.filter(doctor.id == followers.c.doctor_followed_id).count()>0
 
     def follow_doctor(self, doctor):
         if not self.is_following(doctor):

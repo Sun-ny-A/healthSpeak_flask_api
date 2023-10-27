@@ -1,6 +1,6 @@
 from app import db
 from datetime import datetime
-from resources.doctor_ans.DoctorAnsModel import forum_response
+from associations import followers, forum_response
 
 
 
@@ -13,7 +13,7 @@ class UserQuesModel(db.Model):
   forum_question = db.Column(db.String, nullable = False)
   timestamp = db.Column(db.String, default = datetime.utcnow)
   doctor_id = db.Column(db.Integer, db.ForeignKey('doctors.id'))
-  forum_responses = db.relationship('DoctorAnsModel', secondary=forum_response, primaryjoin=forum_response.c.question_id == id, secondaryjoin=forum_response.c.doctor_id == doctor_id, lazy='dynamic', overlaps ="forum_questions")
+  forum_responses = db.relationship('DoctorAnsModel', secondary=forum_response, back_populates='forum_responses')
   
 
   def __repr__(self):

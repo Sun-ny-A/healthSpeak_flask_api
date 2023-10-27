@@ -1,6 +1,6 @@
 from app import db
-from resources.doctors.DoctorModel import followers
 from werkzeug.security import generate_password_hash, check_password_hash
+from associations import followers, forum_response
 
 
 class UserModel(db.Model):
@@ -14,13 +14,12 @@ class UserModel(db.Model):
     email = db.Column(db.String, unique=True, nullable=False)
     password_hash = db.Column(db.String, nullable=False)
     questions = db.relationship('UserQuesModel', backref='author', lazy='dynamic', cascade='all, delete')
-    following_doctors = db.relationship(
+     # Users following doctors
+    followed_doctors = db.relationship(
         'DoctorModel',
         secondary=followers,
-        primaryjoin=(followers.c.user_id == id) & (followers.c.doctor_followed_id == id),
-        secondaryjoin=(followers.c.user_id == id) & (followers.c.doctor_followed_id == id),
-        backref=db.backref('user_followers', lazy='dynamic'),
-        lazy='dynamic')
+        back_populates='user_followers'
+    )
 
     def __repr__(self):
         return f'<User: {self.username}'
