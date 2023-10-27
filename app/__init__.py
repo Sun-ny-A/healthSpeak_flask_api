@@ -1,5 +1,5 @@
-from flask_cors import CORS
 from flask import Flask
+from flask_cors import CORS
 from flask_smorest import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -8,7 +8,7 @@ from flask_jwt_extended import JWTManager
 from Config import Config
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 app.config.from_object(Config)
 
 db = SQLAlchemy(app)
