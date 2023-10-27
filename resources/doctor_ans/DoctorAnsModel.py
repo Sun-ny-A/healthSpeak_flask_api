@@ -1,6 +1,6 @@
 from app import db
 from datetime import datetime
-from associations import followers, forum_response
+from associations.associations  import followers,forum_response
 
 
 class DoctorAnsModel(db.Model):

@@ -14,6 +14,3 @@ followers = db.Table(
     db.Column('doctor_followed_id', db.Integer, db.ForeignKey('doctors.id')),
     db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
 )
-
-
-
