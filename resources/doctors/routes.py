@@ -16,7 +16,9 @@ class DoctorList(MethodView):
 
   @bp.response(200, DoctorModelSchema(many = True))
   def get(self):
+    print('in request')
     doctors = DoctorModel.query.all()
+    print(doctors)
     return doctors
 
 

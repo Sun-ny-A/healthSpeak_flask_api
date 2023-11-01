@@ -1,7 +1,7 @@
 from app import db
 from sqlalchemy import DateTime
 from datetime import datetime
-from ..associations.associations import forum_response
+#from ..associations.associations import forum_response
 
 
 class DoctorAnsModel(db.Model):
@@ -12,11 +12,11 @@ class DoctorAnsModel(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     forum_answer = db.Column(db.String, nullable=False)
     timestamp = db.Column(DateTime, default=datetime.utcnow)
-    doctor_id = db.Column(db.Integer, db.ForeignKey('doctors.id'))
+    #doctor_id = db.Column(db.Integer, db.ForeignKey('doctors.id'))
 
     # Explicit relationship with doctors
-    doctor = db.relationship('DoctorModel', back_populates='answers')
-    forum_responses = db.relationship('UserQuesModel', secondary=forum_response, back_populates='forum_responses')
+    #doctor = db.relationship('DoctorModel', back_populates='answers')
+    #forum_responses = db.relationship('UserQuesModel', secondary=forum_response, back_populates='forum_responses')
 
 
     def __repr__(self):

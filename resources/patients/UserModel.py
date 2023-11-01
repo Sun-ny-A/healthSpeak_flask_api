@@ -1,6 +1,6 @@
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
-from ..associations.associations import followers
+#from ..associations.associations import followers
 
 
 class UserModel(db.Model):
@@ -15,11 +15,13 @@ class UserModel(db.Model):
     password_hash = db.Column(db.String, nullable=False)
     questions = db.relationship('UserQuesModel', backref='author', lazy='dynamic', cascade='all, delete')
     # Users following doctors
-    followed_doctors = db.relationship(
-        'DoctorModel',
-        secondary=followers,
-        back_populates='user_followers'
-    )
+    # followed_doctors = db.relationship(
+    #     'DoctorModel',
+    #     secondary=followers,
+    #     primaryjoin=followers.c.user_id==id,
+    #     back_populates='user_followers'
+    # )
+
 
     def __repr__(self):
         return f'<User: {self.username}'

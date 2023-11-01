@@ -31,7 +31,7 @@ class QuestionList(MethodView):
       p.save()
       return p
     else:
-      abort(400, message="Invalid User id")
+      abort(400, message="Invalid username")
   
 @bp.route('/<question_id>')
 class Question(MethodView):

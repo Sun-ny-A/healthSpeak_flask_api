@@ -8,7 +8,7 @@ from flask_jwt_extended import JWTManager
 from Config import Config
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
+CORS(app)
 app.config.from_object(Config)
 
 db = SQLAlchemy(app)

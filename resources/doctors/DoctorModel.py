@@ -1,6 +1,6 @@
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
-from ..associations.associations import followers
+#from ..associations.associations import followers
 
 
 
@@ -16,24 +16,25 @@ class DoctorModel(db.Model):
     phone_number = db.Column(db.String)
     accepting_patients = db.Column(db.Boolean, nullable=False)
     profile_bio = db.Column(db.String)
-    answers = db.relationship('DoctorAnsModel', back_populates='doctor')
+    #answers = db.relationship('DoctorAnsModel', back_populates='doctor')
 
-    # Doctors following and being followed
-    followed_doctors = db.relationship(
-        'DoctorModel',
-        secondary=followers,
-        primaryjoin=id == followers.c.doctor_follower_id,
-        secondaryjoin=id == followers.c.doctor_followed_id,
-        back_populates='follower_doctors'
-    )
-    
-    follower_doctors = db.relationship(
-        'DoctorModel',
-        secondary=followers,
-        primaryjoin=id == followers.c.doctor_followed_id,
-        secondaryjoin=id == followers.c.doctor_follower_id,
-        back_populates='followed_doctors'
-    )
+    # # Doctors following and being followed
+    # followed_doctors = db.relationship(
+    #     'DoctorModel',
+    #     secondary=followers,
+    #     primaryjoin=id == followers.c.doctor_follower_id,
+    #     secondaryjoin=id == followers.c.doctor_followed_id,
+    #     back_populates='follower_doctors'
+    # )
+
+    # follower_doctors = db.relationship(
+    #     'DoctorModel',
+    #     secondary=followers,
+    #     primaryjoin=id == followers.c.doctor_followed_id,
+    #     secondaryjoin=id == followers.c.doctor_follower_id,
+    #     back_populates='followed_doctors'
+   # )
+
     
     
     def __repr__(self):
